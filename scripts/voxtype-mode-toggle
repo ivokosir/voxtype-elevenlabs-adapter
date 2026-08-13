@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:-}"
+voxtype_bin="${VOXTYPE_BIN:-voxtype}"
+runtime_root="${XDG_RUNTIME_DIR:-/tmp}"
+
+case "$mode" in
+  direct|luna) ;;
+  *) exit 2 ;;
+esac
+
+exec 9>"$runtime_root/voxtype-mode-toggle.lock"
+flock -n 9 || exit 0
+
+state="$("$voxtype_bin" status 2>/dev/null || true)"
+
+case "$state" in
+  idle|recording|streaming)
+    exec "$voxtype_bin" record toggle --profile "$mode"
+    ;;
+  transcribing)
+    exit 0
+    ;;
+  *)
+    exit 1
+    ;;
+esac
