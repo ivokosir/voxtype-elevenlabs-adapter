@@ -10,7 +10,6 @@ fi
 config_root="${XDG_CONFIG_HOME:-$HOME/.config}"
 prompt_file="${VOXTYPE_LUNA_PROMPT:-$config_root/voxtype-elevenlabs-adapter/transcript-cleanup-prompt.txt}"
 codex_bin="${CODEX_BIN:-codex}"
-copy_bin="${VOXTYPE_COPY_TRANSCRIPT_BIN:-voxtype-copy-transcript}"
 runtime_root="${XDG_RUNTIME_DIR:-/tmp}"
 runtime_dir="$(mktemp -d "$runtime_root/voxtype-luna.XXXXXX")"
 result_file="$runtime_dir/result.txt"
@@ -23,7 +22,6 @@ trap cleanup EXIT
 
 [[ -r "$prompt_file" ]]
 command -v "$codex_bin" >/dev/null
-command -v "$copy_bin" >/dev/null
 
 prompt="$(< "$prompt_file")"
 
@@ -44,4 +42,4 @@ printf '%s' "$transcript" | timeout --signal=TERM 90s \
   "$prompt" >/dev/null
 
 [[ -s "$result_file" ]]
-sed -e 's/[[:space:]]*$//' "$result_file" | "$copy_bin"
+sed -e 's/[[:space:]]*$//' "$result_file"

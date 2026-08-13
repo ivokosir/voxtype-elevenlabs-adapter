@@ -48,12 +48,12 @@ Add two named Voxtype profiles:
 
 ```toml
 [profiles.direct]
-post_process_command = "/home/your-user/.local/bin/voxtype-copy-transcript"
-post_process_timeout_ms = 5000
+output_mode = "paste"
 
 [profiles.luna]
 post_process_command = "/home/your-user/.local/bin/voxtype-luna-cleanup"
 post_process_timeout_ms = 95000
+output_mode = "paste"
 ```
 
 Then bind a second key in niri:
@@ -63,7 +63,7 @@ Mod+B { spawn "/home/your-user/.local/bin/voxtype-mode-toggle" "direct"; }
 Mod+G { spawn "/home/your-user/.local/bin/voxtype-mode-toggle" "luna"; }
 ```
 
-Either key can start or stop the single active recording. The key used to stop decides the result: `Mod+B` keeps the ElevenLabs transcript unchanged, while `Mod+G` cleans it with Luna. Both results are typed with wtype and copied to the clipboard. Presses during transcription are ignored so they cannot start another recording.
+Either key can start or stop the single active recording. The key used to stop decides the result: `Mod+B` keeps the ElevenLabs transcript unchanged, while `Mod+G` cleans it with Luna. Both results are copied to the clipboard and inserted with `Ctrl+V`; wtype sends only the paste shortcut, so newlines do not act like Enter presses. Presses during transcription are ignored so they cannot start another recording.
 
 The cleanup prompt is installed at `~/.config/voxtype-elevenlabs-adapter/transcript-cleanup-prompt.txt`, so it can be edited without rebuilding. If cleanup fails or times out, Voxtype outputs the original transcription.
 
