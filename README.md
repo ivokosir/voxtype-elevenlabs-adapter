@@ -40,6 +40,33 @@ Existing compositor commands remain unchanged. For example, niri toggle mode:
 Mod+B { spawn "voxtype" "record" "toggle"; }
 ```
 
+## Optional Luna cleanup mode
+
+The installer also adds `voxtype-luna-cleanup`, which uses the Codex CLI and `gpt-5.6-luna` with low reasoning to remove spoken clutter. It requires a Codex CLI login (`codex login status`). No OpenAI API key is stored by this project.
+
+Add two named Voxtype profiles:
+
+```toml
+[profiles.direct]
+post_process_command = "/home/your-user/.local/bin/voxtype-copy-transcript"
+post_process_timeout_ms = 5000
+
+[profiles.luna]
+post_process_command = "/home/your-user/.local/bin/voxtype-luna-cleanup"
+post_process_timeout_ms = 95000
+```
+
+Then bind a second key in niri:
+
+```kdl
+Mod+B { spawn "/home/your-user/.local/bin/voxtype-mode-toggle" "direct"; }
+Mod+G { spawn "/home/your-user/.local/bin/voxtype-mode-toggle" "luna"; }
+```
+
+Either key can start or stop the single active recording. The key used to stop decides the result: `Mod+B` keeps the ElevenLabs transcript unchanged, while `Mod+G` cleans it with Luna. Both results are typed with wtype and copied to the clipboard. Presses during transcription are ignored so they cannot start another recording.
+
+The cleanup prompt is installed at `~/.config/voxtype-elevenlabs-adapter/transcript-cleanup-prompt.txt`, so it can be edited without rebuilding. If cleanup fails or times out, Voxtype outputs the original transcription.
+
 Restart Voxtype after changing its configuration:
 
 ```bash
