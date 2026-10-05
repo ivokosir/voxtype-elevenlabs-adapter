@@ -42,7 +42,7 @@ Mod+B { spawn "voxtype" "record" "toggle"; }
 
 ## Optional Luna cleanup mode
 
-The installer also adds `voxtype-luna-cleanup`, which uses the Codex CLI and `gpt-5.6-luna` with low reasoning to remove spoken clutter. It requires a Codex CLI login (`codex login status`). No OpenAI API key is stored by this project.
+The installer also adds `voxtype-luna-cleanup`, which uses the Codex CLI and `gpt-6-luna` with low reasoning to remove spoken clutter. It requires a Codex CLI login (`codex login status`). No OpenAI API key is stored by this project.
 
 Add two named Voxtype profiles:
 

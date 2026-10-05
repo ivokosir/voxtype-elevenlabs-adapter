@@ -27,7 +27,7 @@ prompt="$(< "$prompt_file")"
 
 printf '%s' "$transcript" | timeout --signal=TERM 90s \
   "$codex_bin" exec \
-  --model gpt-5.6-luna \
+  --model gpt-6-luna \
   --config 'model_reasoning_effort="low"' \
   --config 'service_tier="fast"' \
   --config 'features.fast_mode=true' \
